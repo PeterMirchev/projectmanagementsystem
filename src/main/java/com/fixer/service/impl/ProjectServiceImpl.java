@@ -1,16 +1,19 @@
-package com.fixer.service;
+package com.fixer.service.impl;
 
 import com.fixer.model.Chat;
 import com.fixer.model.Project;
 import com.fixer.model.User;
 import com.fixer.repository.ProjectRepository;
+import com.fixer.service.ChatService;
+import com.fixer.service.ProjectService;
+import com.fixer.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ProjectServiceImpl implements ProjectService{
+public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserService userService;

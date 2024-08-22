@@ -1,4 +1,4 @@
-package com.fixer.service;
+package com.fixer.service.impl;
 
 import com.fixer.model.User;
 import com.fixer.repository.UserRepository;

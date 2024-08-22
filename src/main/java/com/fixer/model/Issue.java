@@ -24,6 +24,7 @@ public class Issue {
     private String description;
     private String status;
 
+    @Column(name = "project_id", insertable = false, updatable = false)
     private Long projectId;
     private String priority;
     private LocalDate dueDate;
@@ -32,8 +33,8 @@ public class Issue {
     @ManyToOne
     private User assignee;
 
-    @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "project_id")
     private Project project;
 
     @JsonIgnore

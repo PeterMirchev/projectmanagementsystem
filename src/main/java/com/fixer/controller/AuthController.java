@@ -5,7 +5,7 @@ import com.fixer.model.User;
 import com.fixer.repository.UserRepository;
 import com.fixer.request.LoginRequest;
 import com.fixer.response.AuthResponse;
-import com.fixer.service.CustomUserDetailsImpl;
+import com.fixer.service.impl.CustomUserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
