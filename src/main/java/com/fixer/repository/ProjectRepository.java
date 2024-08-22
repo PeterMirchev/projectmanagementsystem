@@ -14,7 +14,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     List<Project> findByOwner(User user);
 
-    List<Project> findByNameContainingAndTeamContaining(String partialName, User user);
+    List<Project> findByNameContainingAndTeamContains(String partialName, User user);
 
     @Query("""
         SELECT p FROM Project p
