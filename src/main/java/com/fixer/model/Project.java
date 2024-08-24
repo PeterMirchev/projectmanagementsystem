@@ -23,6 +23,7 @@ public class Project {
     private String description;
     private String category;
 
+    @ElementCollection
     private List<String> tags = new ArrayList<>();
 
     @JsonIgnore

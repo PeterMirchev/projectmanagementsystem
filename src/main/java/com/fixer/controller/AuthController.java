@@ -5,6 +5,7 @@ import com.fixer.model.User;
 import com.fixer.repository.UserRepository;
 import com.fixer.request.LoginRequest;
 import com.fixer.response.AuthResponse;
+import com.fixer.service.SubscriptionService;
 import com.fixer.service.impl.CustomUserDetailsImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +27,16 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomUserDetailsImpl customUserDetails;
+    private final SubscriptionService subscriptionService;
 
     public AuthController(UserRepository userRepository,
                           PasswordEncoder passwordEncoder,
-                          CustomUserDetailsImpl customUserDetails) {
+                          CustomUserDetailsImpl customUserDetails,
+                          SubscriptionService subscriptionService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.customUserDetails = customUserDetails;
+        this.subscriptionService = subscriptionService;
     }
 
     @PostMapping("/signup")
@@ -47,6 +51,8 @@ public class AuthController {
         User createUser = generateUser(user);
 
         User persistedUser = userRepository.save(createUser);
+
+        subscriptionService.createSubscription(persistedUser);
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
         SecurityContextHolder.getContext().setAuthentication(authentication);
