@@ -57,7 +57,7 @@ public class IssueController {
 
     @DeleteMapping("/{issueId}")
     public ResponseEntity<MessageResponse> deleteIssue(@PathVariable("issueId") Long issueId,
-                                                    @RequestHeader("Authentication") String token) throws Exception {
+                                                       @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
 
         User user = userService.findUserProfileByJwt(token);
         issueService.deleteIssue(issueId, user.getId());
@@ -85,8 +85,8 @@ public class IssueController {
     }
 
     @PutMapping("/{issueId}/status/{status}")
-    public  ResponseEntity<Issue> updateStatus(@PathVariable(name = "issueId") Long issueId,
-                                               @PathVariable(name = "status") String status) throws Exception {
+    public ResponseEntity<Issue> updateStatus(@PathVariable(name = "issueId") Long issueId,
+                                              @PathVariable(name = "status") String status) throws Exception {
 
         Issue issue = issueService.updateStatus(issueId, status);
 

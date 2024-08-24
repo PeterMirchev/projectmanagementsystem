@@ -31,7 +31,7 @@ public class PaymentController {
 
     @PostMapping("/{planType}")
     public ResponseEntity<PaymentLinkResponse> createPaymentLink(@PathVariable(name = "planType") PlanType planType,
-                                                                 @RequestHeader("Authorisation") String token) throws Exception {
+                                                                 @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
 
         User user = userService.findUserProfileByJwt(token);
 

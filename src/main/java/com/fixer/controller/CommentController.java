@@ -43,7 +43,7 @@ public class CommentController {
 
     @DeleteMapping("{commentId}")
     public ResponseEntity<MessageResponse> deleteComment(@PathVariable(name = "commentId") Long commentId,
-                                                         @RequestHeader("Authorisation") String token) throws Exception {
+                                                         @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
 
         User user = userService.findUserProfileByJwt(token);
         commentService.deleteComment(commentId, user.getId());

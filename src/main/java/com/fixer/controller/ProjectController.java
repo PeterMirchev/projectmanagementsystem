@@ -34,7 +34,7 @@ public class ProjectController {
     @GetMapping
     public ResponseEntity<List<Project>> getProjects(@RequestParam(required = false) String category,
                                                      @RequestParam(required = false) String tag,
-                                                     @RequestHeader("Authorization") String jwt) throws Exception {
+                                                     @RequestHeader(value = "Authorization", required = false) String jwt) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
 
@@ -46,7 +46,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}")
     public ResponseEntity<Project> getProjectById(@PathVariable(name = "projectId") Long projectId,
-                                                     @RequestHeader("Authorization") String jwt) throws Exception {
+                                                  @RequestHeader(value = "Authorization", required = false) String jwt) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
 
@@ -57,7 +57,7 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<Project> createProject(@RequestBody Project project,
-                                                 @RequestHeader("Authorization") String jwt) throws Exception {
+                                                 @RequestHeader(value = "Authorization", required = false) String jwt) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
 
@@ -69,7 +69,7 @@ public class ProjectController {
 
     @PutMapping("/{projectId}")
     public ResponseEntity<Project> updateProject(@PathVariable Long projectId,
-                                                 @RequestHeader("Authorization") String jwt,
+                                                 @RequestHeader(value = "Authorization", required = false) String jwt,
                                                  @RequestBody Project project) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
@@ -81,7 +81,7 @@ public class ProjectController {
 
     @DeleteMapping("/{projectId}")
     public ResponseEntity<MessageResponse> deleteAProject(@PathVariable(name = "projectId") Long projectId,
-                                                          @RequestHeader("Authorization") String jwt) throws Exception {
+                                                          @RequestHeader(value = "Authorization", required = false) String jwt) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
         projectService.deleteProject(projectId, user.getId());
@@ -94,7 +94,7 @@ public class ProjectController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Project>> searchProjects(@RequestParam(name = "keyword", required = false) String keyword,
-                                                        @RequestHeader("Authorization") String jwt) throws Exception {
+                                                        @RequestHeader(value = "Authorization", required = false) String jwt) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
 
@@ -105,7 +105,7 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/chat")
     public ResponseEntity<Chat> getChatByProjectId(@PathVariable(name = "projectId") Long projectId,
-                                                   @RequestHeader("Authorization") String jwt) throws Exception {
+                                                   @RequestHeader(value = "Authorization", required = false) String jwt) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
         Chat chat = projectService.getChatByProjectId(projectId);
@@ -115,7 +115,7 @@ public class ProjectController {
 
     @PostMapping("invite")
     public ResponseEntity<MessageResponse> inviteProject(@RequestBody InvitationRequest invite,
-                                                         @RequestHeader("Authorization") String jwt) throws Exception {
+                                                         @RequestHeader(value = "Authorization", required = false) String jwt) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
         invitationService.sendInvitation(invite.getEmail(), invite.getProjectId());
@@ -127,7 +127,7 @@ public class ProjectController {
 
     @GetMapping("accept-invitation")
     public ResponseEntity<Invitation> acceptInviteProject(@RequestParam String token,
-                                                         @RequestHeader("Authorization") String jwt) throws Exception {
+                                                          @RequestHeader(value = "Authorization", required = false) String jwt) throws Exception {
 
         User user = userService.findUserProfileByJwt(jwt);
         Invitation invitation = invitationService.acceptInvitation(token, user.getId());
