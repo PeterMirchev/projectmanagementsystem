@@ -4,7 +4,6 @@ import com.fixer.model.Issue;
 import com.fixer.model.User;
 import com.fixer.model.issueDTO.IssueDTO;
 import com.fixer.request.IssueRequest;
-import com.fixer.response.AuthResponse;
 import com.fixer.response.MessageResponse;
 import com.fixer.service.IssueService;
 import com.fixer.service.UserService;
@@ -40,9 +39,9 @@ public class IssueController {
     }
 
 
-    @PostMapping
+    @PostMapping//TODO:fix the recursion on the output
     public ResponseEntity<IssueDTO> createIssue(@RequestBody IssueRequest issue,
-                                                @RequestHeader("Authentication") String token) throws Exception {
+                                                @RequestHeader(value = "Authorization", required=false) String token) throws Exception {
 
 
         User user = userService.findUserProfileByJwt(token);
