@@ -35,6 +35,7 @@ public class Issue {
 
     @ManyToOne
     @JoinColumn(name = "project_id")
+    @JsonIgnore
     private Project project;
 
     @JsonIgnore

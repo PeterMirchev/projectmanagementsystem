@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.fixer.config.BaseMessagesAndPaths.*;
+
 @RestController
-@RequestMapping("/api/messages")
+@RequestMapping(MESSAGE_CONTROLLER_BASE_PATH)
 public class MessageController {
 
     private final MessageService messageService;
@@ -19,17 +21,18 @@ public class MessageController {
 
     public MessageController(MessageService messageService,
                              ProjectService projectService) {
+
         this.messageService = messageService;
         this.projectService = projectService;
     }
 
-    @PostMapping
+    @PostMapping("/send")
     public ResponseEntity<Message> sendMessage(@RequestBody CreateMessageRequest message) throws Exception {
 
         Chat chat = projectService.getChatByProjectId(message.getProjectId()).getProject().getChat();
 
         if (chat == null) {
-            throw new Exception("Chat not found.");
+            throw new Exception(CHAT_NOT_FOUND);
         }
 
         Message sentMessage = messageService.sendMessage(
@@ -40,7 +43,7 @@ public class MessageController {
         return ResponseEntity.ok(sentMessage);
     }
 
-    @GetMapping("/chat/{projectId}")
+    @GetMapping(CHAT_PROJECT_ID)
     public ResponseEntity<List<Message>> getMessagesByChatId(@PathVariable(name = "projectId") Long projectId) throws Exception {
 
         List<Message> messages = messageService.getMessagesByProjectId(projectId);

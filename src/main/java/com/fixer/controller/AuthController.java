@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.fixer.config.BaseMessagesAndPaths.*;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -45,7 +47,7 @@ public class AuthController {
         User isUserExist = userRepository.findByEmail(user.getEmail());
 
         if (isUserExist != null) {
-            throw new Exception(String.format("{%s} already exist within another account.", user.getEmail()));
+            throw new Exception(String.format(USER_ALREADY_EXIST, user.getEmail()));
         }
 
         User createUser = generateUser(user);
@@ -60,7 +62,7 @@ public class AuthController {
         String jwt = JwtProvider.generatedToken(authentication);
 
         AuthResponse res = new AuthResponse();
-        res.setMessage("signup success.");
+        res.setMessage(SIGNUP_SUCCESS);
         res.setJwt(jwt);
 
         return new ResponseEntity<>(res, HttpStatus.CREATED);
@@ -79,7 +81,7 @@ public class AuthController {
         String jwt = JwtProvider.generatedToken(authentication);
 
         AuthResponse res = new AuthResponse();
-        res.setMessage("signing success.");
+        res.setMessage(SIGNING_SUCCESS);
         res.setJwt(jwt);
 
         return new ResponseEntity<>(res, HttpStatus.CREATED);
@@ -90,10 +92,10 @@ public class AuthController {
         UserDetails userDetails = customUserDetails.loadUserByUsername(username);
 
         if (userDetails == null) {
-            throw new BadCredentialsException("Invalid username.");
+            throw new BadCredentialsException(INVALID_USERNAME);
         }
         if(!passwordEncoder.matches(password, userDetails.getPassword())) {
-            throw new BadCredentialsException("Invalid password.");
+            throw new BadCredentialsException(INVALID_PASSWORD);
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.fixer.config.BaseMessagesAndPaths.*;
+
 @RestController
-@RequestMapping("/api/comments")
+@RequestMapping(COMMENT_CONTROLLER_BASE_PATH)
 public class CommentController {
 
     private final CommentService commentService;
@@ -22,6 +24,7 @@ public class CommentController {
 
     public CommentController(CommentService commentService,
                              UserService userService) {
+
         this.commentService = commentService;
         this.userService = userService;
     }
@@ -29,7 +32,7 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<Comment> createComment(@RequestBody CreateCommentRequest commentRequest,
-                                                 @RequestHeader("Authorisation") String token) throws Exception {
+                                                 @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
 
         User user = userService.findUserProfileByJwt(token);
 
@@ -41,7 +44,7 @@ public class CommentController {
         return ResponseEntity.ok(comment);
     }
 
-    @DeleteMapping("{commentId}")
+    @DeleteMapping(COMMENT_ID)
     public ResponseEntity<MessageResponse> deleteComment(@PathVariable(name = "commentId") Long commentId,
                                                          @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
 
@@ -49,12 +52,12 @@ public class CommentController {
         commentService.deleteComment(commentId, user.getId());
 
         MessageResponse response = new MessageResponse();
-        response.setMessageResponse("Comment deleted successfully.");
+        response.setMessageResponse(COMMENT_DELETED);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{issueId}")
+    @GetMapping(ISSUE_ID)
     public ResponseEntity<List<Comment>> getCommentsByIssueId(@PathVariable(name = "issueId") Long issueId) {
 
         List<Comment> comments = commentService.findCommentsByIssueId(issueId);

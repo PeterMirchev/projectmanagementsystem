@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.fixer.config.BaseMessagesAndPaths.*;
+
 @RestController
-@RequestMapping("/api/issues")
+@RequestMapping(ISSUE_CONTROLLER_BASE_PATH)
 public class IssueController {
 
     private final IssueService issueService;
@@ -26,20 +28,20 @@ public class IssueController {
         this.userService = userService;
     }
 
-    @GetMapping("/{issueId}")
+    @GetMapping(ISSUE_ID)
     public ResponseEntity<Issue> getIssueById(@PathVariable(name = "issueId") Long issueId) throws Exception {
 
         return ResponseEntity.ok(issueService.getIssueById(issueId));
     }
 
-    @GetMapping("/project/{projectId}")
+    @GetMapping(PROJECT_PROJECT_ID)
     public ResponseEntity<List<Issue>> getIssueByProjectId(@PathVariable(name = "projectId") Long projectId) throws Exception {
 
         return ResponseEntity.ok(issueService.getIssueByProjectId(projectId));
     }
 
 
-    @PostMapping//TODO:fix the recursion on the output
+    @PostMapping
     public ResponseEntity<IssueDTO> createIssue(@RequestBody IssueRequest issue,
                                                 @RequestHeader(value = "Authorization", required=false) String token) throws Exception {
 
@@ -54,7 +56,7 @@ public class IssueController {
 
     }
 
-    @DeleteMapping("/{issueId}")
+    @DeleteMapping(ISSUE_ID)
     public ResponseEntity<MessageResponse> deleteIssue(@PathVariable("issueId") Long issueId,
                                                        @RequestHeader(value = "Authorization", required = false) String token) throws Exception {
 
@@ -62,28 +64,29 @@ public class IssueController {
         issueService.deleteIssue(issueId, user.getId());
 
         MessageResponse response = new MessageResponse();
-        response.setMessageResponse("Issue deleted successfully.");
+        response.setMessageResponse(DELETED_ISSUE);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/search")
+    @GetMapping(SEARCH)
     public ResponseEntity<List<Issue>> searchIssues() {
 
         return null;
     }
 
-    @PutMapping("{issueId}/assignee/{userId}")
+    @PutMapping(ISSUE_ASSIGNEE_USER_ID)
     public ResponseEntity<Issue> addUserToIssue(@PathVariable(name = "issueId") Long issueId,
                                                 @PathVariable(name = "userId") Long userId) throws Exception {
 
+        System.out.println();
         Issue issue = issueService.addUserToIssue(issueId, userId);
 
         return ResponseEntity.ok(issue);
 
     }
 
-    @PutMapping("/{issueId}/status/{status}")
+    @PutMapping(ISSUE_STATUS)
     public ResponseEntity<Issue> updateStatus(@PathVariable(name = "issueId") Long issueId,
                                               @PathVariable(name = "status") String status) throws Exception {
 

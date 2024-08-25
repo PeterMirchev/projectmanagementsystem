@@ -41,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
             throw new Exception("Invalid user ID.");
         }
 
-        Comment comment = mapToComment(issue, user);
+        Comment comment = mapToComment(issue, user, commentInput);
 
         Comment persistedComment = commentRepository.save(comment);
         issue.get().getComments().add(persistedComment);
@@ -71,10 +71,11 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.findCommentByIssueId(issueId);
     }
 
-    protected static Comment mapToComment(Optional<Issue> issue, Optional<User> user) {
+    protected static Comment mapToComment(Optional<Issue> issue, Optional<User> user, String commentInput) {
         Comment comment = new Comment();
         comment.setIssue(issue.get());
         comment.setUser(user.get());
+        comment.setContent(commentInput);
         comment.setCreatedDateTime(LocalDateTime.now());
         return comment;
     }

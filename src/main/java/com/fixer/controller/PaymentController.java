@@ -12,8 +12,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static com.fixer.config.BaseMessagesAndPaths.*;
+
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping(PAYMENT_CONTROLLER_BASE_PATH)
 public class PaymentController {
 
     @Value("${razorpay.api.key}")
@@ -25,6 +27,7 @@ public class PaymentController {
     private final UserService userService;
 
     public PaymentController(UserService userService) {
+
         this.userService = userService;
     }
 
@@ -59,11 +62,11 @@ public class PaymentController {
         notify.put("email", true);
 
         paymentLinkRequest.put("notify", notify);
-        paymentLinkRequest.put("callback_url", "http://localhost:5173/upgrade_plan/success?planType" + planType);
+        paymentLinkRequest.put(CALLBACK_URL, CALLBACK_URL_TWO + planType);
 
         PaymentLink paymentLink = razorpay.paymentLink.create(paymentLinkRequest);
 
-        String paymentLinkUrl = paymentLink.get("sort_url");
+        String paymentLinkUrl = paymentLink.get(SORT_URL);
         String paymentLinkId = paymentLink.get("id");
 
         PaymentLinkResponse response = new PaymentLinkResponse();

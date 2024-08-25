@@ -19,6 +19,8 @@ import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.List;
 
+import static com.fixer.config.BaseMessagesAndPaths.*;
+
 public class JwtTokenValidator extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -39,8 +41,8 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                         .parseClaimsJws(jwt)
                         .getBody();
 
-                String email = String.valueOf(claims.get("email"));
-                String authorities = String.valueOf(claims.get("authorities"));
+                String email = String.valueOf(claims.get(EMAIL));
+                String authorities = String.valueOf(claims.get(AUTHORITIES));
 
                 List<GrantedAuthority> auths = AuthorityUtils
                         .commaSeparatedStringToAuthorityList(authorities);
@@ -49,7 +51,7 @@ public class JwtTokenValidator extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
             catch (Exception e) {
-                throw new BadCredentialsException("Invalid token!");
+                throw new BadCredentialsException(INVALID_TOKEN);
             }
         }
 

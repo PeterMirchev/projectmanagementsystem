@@ -16,6 +16,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static com.fixer.config.BaseMessagesAndPaths.AUTHORISATION;
+
 @Configuration
 @EnableWebSecurity
 public class AppConfig {
@@ -26,7 +28,7 @@ public class AppConfig {
         http.sessionManagement(Management -> Management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
                         Authorize -> Authorize.requestMatchers("/api/**").authenticated()
-                        .anyRequest().permitAll()).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
+                                .anyRequest().permitAll()).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
@@ -41,18 +43,18 @@ public class AppConfig {
 
                 CorsConfiguration cfg = new CorsConfiguration();
                 cfg.setAllowedOrigins(Arrays.asList(
-                       "http://localhost:3000/",
-                       "http://localhost:5173/",
-                       "http://localhost:4200/"
+                        BaseMessagesAndPaths.HOST_3000,
+                        BaseMessagesAndPaths.HOST_5173,
+                        BaseMessagesAndPaths.HOST_4200
                 ));
 
                 cfg.setAllowedMethods(Collections.singletonList("*"));
                 cfg.setAllowCredentials(true);
                 cfg.setAllowedHeaders(Collections.singletonList("*"));
-                cfg.setExposedHeaders(Arrays.asList("Authorization"));
+                cfg.setExposedHeaders(Arrays.asList(AUTHORISATION));
                 cfg.setMaxAge(3600L);
 
-                return  cfg;
+                return cfg;
             }
         };
     }
